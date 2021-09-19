@@ -4,8 +4,25 @@
   "description": "A markdown previewer for freeCodeCamp assignment",
   "main": "index.html",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npm run watch:all",
+    "lite": "lite-server",
+    "scss": "sass assets/css:assets/css",
+    "watch:scss": "onchange 'assets/css/*.scss' -- npm run scss",
+    "watch:all": "parallelshell 'npm run watch:scss' 'npm run lite'"
   },
   "author": "John Yip",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.15",
+    "@popperjs/core": "^2.10",
+    "bootstrap": "^5.1"
+  },
+  "devDependencies": {
+    "@clarencep/parallelshell": "^3.0.4",
+    "sass": "^1.41",
+    "npm-run-all": "^4.1",
+    "onchange": "^7.1",
+    "lite-server": "^2.6"
+  }
 }

@@ -1,3 +1,29 @@
+body {
+  height: 100vh;
+}
 
+.page-container {
+  margin: 0 auto;
+  width: 100vw;
+  height: 100%;
+  border: 1px solid black;
+}
+.page-container .row {
+  margin: 0;
+  padding: 0;
+  max-height: 100%;
+}
+.page-container .row #top-bar {
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid black;
+}
+.page-container .row textarea[name=editor] {
+  resize: none;
+  border-style: none;
+  font-family: "Courier", sans-serif;
+}
+.page-container .row textarea[name=editor]:focus {
+  outline: none;
+}
 
 /*# sourceMappingURL=styles.css.map */

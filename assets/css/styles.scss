@@ -1,2 +1,41 @@
 // Your styles here
-$test-var: 123;
+
+@mixin setBlockCenter() {
+  margin: 0 auto;
+}
+
+@mixin setMarginAndPadding($margin-size, $padding-size) {
+  margin: $margin-size;
+  padding: $padding-size;
+}
+
+body {
+  height: 100vh;
+}
+
+.page-container {
+  @include setBlockCenter();
+  width: 100vw;
+  height: 100%;
+  border: 1px solid black;
+
+  .row {
+    @include setMarginAndPadding(0, 0);
+    max-height: 100%;
+
+    #top-bar {
+      padding: 0.5rem 1rem;
+      border-bottom: 1px solid black;
+    }
+
+    textarea[name="editor"] {
+      resize: none;
+      border-style: none;
+      font-family: "Courier", sans-serif;
+    }
+
+    textarea[name="editor"]:focus {
+      outline: none;
+    }
+  }
+}

@@ -1,28 +1,44 @@
 const setMainHeight = () => {
-  const bodyHeight = document.getElementsByTagName("body")[0].offsetHeight;
-  const navbarHeight = document.getElementById("navbar").offsetHeight;
+  const bodyHeight = document.querySelector("body").offsetHeight;
+  const navbarHeight = document.querySelector("#navbar").offsetHeight;
 
-  document.getElementsByTagName("main")[0].style.height = `${
+  document.querySelector("main").style.height = `${
     bodyHeight - navbarHeight
   }px`;
 };
 
 const setTextareaHeight = () => {
-  const bodyHeight = document.getElementsByTagName("body")[0].offsetHeight;
-  const navbarHeight = document.getElementById("navbar").offsetHeight;
-  const topBarHeight = document.getElementById("top-bar").offsetHeight;
+  const pageContainer = document.querySelector(".page-container");
+  const topBar = document.querySelector(".page-container > .page");
 
-  document.getElementsByClassName("editor")[0].style.height = `${
-    bodyHeight - navbarHeight - topBarHeight - 2
+  document.querySelector("textarea").style.height = `${
+    pageContainer.offsetHeight -
+    pageContainer.clientTop * 2 -
+    topBar.offsetHeight
   }px`;
 };
 
-window.onload = () => {
+const setElementsHeights = () => {
   setMainHeight();
   setTextareaHeight();
 };
 
-window.addEventListener("resize", (event) => {
-  setMainHeight();
-  setTextareaHeight();
-});
+const setModalBodyContent = (elemId) => {
+  if (elemId == "editor-enlarge-btn") {
+    document.querySelector(".modal-body").innerHTML =
+      document.getElementById("md-editor").value;
+  } else if (elemId == "preview-enlarge-btn") {
+    document.querySelector(".modal-body").innerHTML =
+      document.getElementById("md-preview").value;
+  } else {
+    document.querySelector(".modal-body").innerHTML =
+      "Unknown button is clicked!";
+  }
+};
+
+window.onload = () => {
+  document.querySelector("#preview").style.display = "none";
+  setElementsHeights();
+};
+
+window.addEventListener("resize", setElementsHeights);

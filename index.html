@@ -14,38 +14,73 @@
   <title>Markdown Previewer</title>
 </head>
 <body class="m-0 p-0">
-  <nav id="navbar" class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container-fluid">
-      <span class="navbar-brand mb-0 h1">Markdown Previewer</span>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <span class="me-auto">
-          <!-- This span pushes all nav items to the right when the viewport is at lg breakpoint width or more. -->
-        </span>
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link" onclick="alert(this.innerHTML)">View Preview</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" onclick="alert(this.innerHTML)">About</a>
-          </li>
-        </ul>
+  <header>
+    <nav id="navbar" class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
+        <span class="navbar-brand mb-0 h1">Markdown Previewer</span>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <span class="me-auto">
+            <!-- This span pushes all nav items to the right when the viewport is at lg breakpoint width or more. -->
+          </span>
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" onclick="alert(this.innerHTML)">View Preview</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" onclick="alert(this.innerHTML)">About</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="modal fade" id="enlargeTextareaModal" tabindex="-1" aria-labelledby="enlargeTextareaModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="enlargeTextareaModalLabel">Markdown</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <pre class="modal-body">
+            <!-- Content depends on which page container is opened. -->
+          </pre>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
       </div>
     </div>
-  </nav>
+
+  </header>
   
   <main>
     <div id="editor" class="page-container">
       <div class="row page">
         <div id="top-bar" class="col-12 d-flex justify-content-between">
-          <span class="fs-6 top-bar-title align-self-center">Markdown</span>
-          <i class="fas fa-expand-alt fa-2x"></i>
+          <span class="fs-5 top-bar-title align-self-center">Markdown</span>
+          <button id="editor-enlarge-btn"type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#enlargeTextareaModal" onclick="setModalBodyContent(this.id)">
+            <i class="fas fa-expand-alt fa-2x"></i>
+          </button>
         </div>
       </div>
       <div id="content" class="row page">
-        <textarea name="editor" id="editor" class="editor"></textarea>
+        <textarea name="editor" id="md-editor"></textarea>
+      </div>
+    </div>
+    <div id="preview" class="page-container">
+      <div class="row page">
+        <div id="top-bar" class="col-12 d-flex justify-content-between">
+          <span class="fs-5 top-bar-title align-self-center">Preview</span>
+          <button id="preview-enlarge-btn"type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#enlargeTextareaModal" onclick="setModalBodyContent(this.id)">
+            <i class="fas fa-expand-alt fa-2x"></i>
+          </button>
+        </div>
+      </div>
+      <div id="content" class="row page">
+        <textarea name="preview" id="md-preview" readonly aria-readonly="true"></textarea>
       </div>
     </div>
   </main>

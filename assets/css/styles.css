@@ -2,6 +2,23 @@ body {
   height: 100vh;
 }
 
+.nav-link {
+  cursor: pointer;
+}
+
+.modal-body {
+  white-space: pre-wrap;
+  /* css-3 */
+  white-space: -moz-pre-wrap;
+  /* Mozilla, since 1999 */
+  white-space: -pre-wrap;
+  /* Opera 4-6 */
+  white-space: -o-pre-wrap;
+  /* Opera 7 */
+  word-wrap: break-word;
+  /* Internet Explorer 5.5+ */
+}
+
 .page-container {
   margin: 0 auto;
   width: 100vw;
@@ -17,12 +34,15 @@ body {
   padding: 0.5rem 1rem;
   border-bottom: 1px solid black;
 }
-.page-container .row textarea[name=editor] {
+.page-container .row #top-bar .btn {
+  padding: 0 0.3rem;
+}
+.page-container .row textarea {
   resize: none;
   border-style: none;
   font-family: "Courier", sans-serif;
 }
-.page-container .row textarea[name=editor]:focus {
+.page-container .row textarea:focus {
   outline: none;
 }
 

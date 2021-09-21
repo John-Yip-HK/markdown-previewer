@@ -1,4 +1,4 @@
-// Your styles here
+$border-width: 1px;
 
 @mixin setBlockCenter() {
   margin: 0 auto;
@@ -13,11 +13,23 @@ body {
   height: 100vh;
 }
 
+.nav-link {
+  cursor: pointer;
+}
+
+.modal-body {
+  white-space: pre-wrap; /* css-3 */
+  white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+  white-space: -pre-wrap; /* Opera 4-6 */
+  white-space: -o-pre-wrap; /* Opera 7 */
+  word-wrap: break-word; /* Internet Explorer 5.5+ */
+}
+
 .page-container {
   @include setBlockCenter();
   width: 100vw;
   height: 100%;
-  border: 1px solid black;
+  border: $border-width solid black;
 
   .row {
     @include setMarginAndPadding(0, 0);
@@ -25,16 +37,20 @@ body {
 
     #top-bar {
       padding: 0.5rem 1rem;
-      border-bottom: 1px solid black;
+      border-bottom: $border-width solid black;
+
+      .btn {
+        padding: 0 0.3rem;
+      }
     }
 
-    textarea[name="editor"] {
+    textarea {
       resize: none;
       border-style: none;
       font-family: "Courier", sans-serif;
     }
 
-    textarea[name="editor"]:focus {
+    textarea:focus {
       outline: none;
     }
   }

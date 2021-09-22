@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Courier+Prime&display=swap");
 body {
   height: 100vh;
 }
@@ -7,6 +8,7 @@ body {
 }
 
 .modal-body {
+  font-family: "Courier Prime", monospace;
   white-space: pre-wrap;
   /* css-3 */
   white-space: -moz-pre-wrap;
@@ -30,11 +32,11 @@ body {
   padding: 0;
   max-height: 100%;
 }
-.page-container .row #top-bar {
+.page-container .row .top-bar {
   padding: 0.5rem 1rem;
   border-bottom: 1px solid black;
 }
-.page-container .row #top-bar .btn {
+.page-container .row .top-bar .btn {
   padding: 0 0.3rem;
 }
 .page-container .row textarea {
@@ -44,6 +46,13 @@ body {
 }
 .page-container .row textarea:focus {
   outline: none;
+}
+.page-container .row #preview {
+  height: 100%;
+}
+
+.page-container#md-preview {
+  display: none;
 }
 
 /*# sourceMappingURL=styles.css.map */

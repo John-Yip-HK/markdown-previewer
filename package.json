@@ -16,13 +16,15 @@
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15",
     "@popperjs/core": "^2.10",
-    "bootstrap": "^5.1"
+    "bootstrap": "^5.1",
+    "dompurify": "^2.3.3",
+    "marked": "^3.0.4"
   },
   "devDependencies": {
     "@clarencep/parallelshell": "^3.0.4",
-    "sass": "^1.41",
+    "lite-server": "^2.6",
     "npm-run-all": "^4.1",
     "onchange": "^7.1",
-    "lite-server": "^2.6"
+    "sass": "^1.41"
   }
 }

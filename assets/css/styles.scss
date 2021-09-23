@@ -58,6 +58,7 @@ body {
     }
 
     #preview {
+      @include setMarginAndPadding(0, 0);
       height: 100%;
     }
   }

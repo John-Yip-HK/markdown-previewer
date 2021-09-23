@@ -1,52 +1,3 @@
-const setMainHeight = () => {
-  const bodyHeight = document.querySelector("body").offsetHeight;
-  const navbarHeight = document.querySelector("#navbar").offsetHeight;
-
-  document.querySelector("main").style.height = `${
-    bodyHeight - navbarHeight
-  }px`;
-};
-
-const setTextareaHeight = () => {
-  const pageContainer = document.querySelector(".page-container");
-  const topBar = document.querySelector(".page-container > .page");
-
-  for (let elem of [
-    document.querySelector("#editor"),
-    document.querySelector("#preview"),
-  ])
-    elem.style.height = `${
-      pageContainer.offsetHeight -
-      pageContainer.clientTop * 2 -
-      topBar.offsetHeight
-    }px`;
-};
-
-const setElementsHeights = () => {
-  setMainHeight();
-  setTextareaHeight();
-};
-
-const setModalContent = (elemId) => {
-  const modalTitle = document.querySelector(".modal-title");
-  const modalBody = document.querySelector(".modal-body");
-
-  if (elemId == "editor-enlarge-btn") {
-    modalTitle.innerHTML = "Markdown";
-    modalBody.innerHTML = document.getElementById("editor").value;
-  } else if (elemId == "preview-enlarge-btn") {
-    modalTitle.innerHTML = "Preview";
-    modalBody.innerHTML = document.getElementById("preview").value;
-  } else {
-    modalTitle.innerHTML = "Error";
-    modalBody.innerHTML = "Unknown button is clicked!";
-  }
-};
-
-const setEditorContent = () => {
-  document.querySelector("#editor").value = "";
-};
-
 let isInPreview = false;
 
 const changeNavLinkInnerHTML = () => {
@@ -65,6 +16,68 @@ const changeNavLinkInnerHTML = () => {
     previewContainer.style.display = "none";
     editorContainer.style.display = "block";
   }
+};
+
+const setMainHeight = () => {
+  const bodyHeight = document.querySelector("body").offsetHeight;
+  const navbarHeight = document.querySelector("#navbar").offsetHeight;
+
+  document.querySelector("main").style.height = `${
+    bodyHeight - navbarHeight
+  }px`;
+};
+
+const setDisplayAreaHeight = () => {
+  const pageContainerId = isInPreview ? "#md-preview" : "#md-editor";
+  const pageContainer = document.querySelector(pageContainerId);
+  const topBar = pageContainer.firstElementChild;
+
+  for (let elem of [
+    document.querySelector("#editor"),
+    document.querySelector("#preview"),
+  ])
+    elem.style.height = `${
+      pageContainer.offsetHeight -
+      pageContainer.clientTop * 2 -
+      topBar.offsetHeight
+    }px`;
+};
+
+const setElementsHeights = () => {
+  setMainHeight();
+  setDisplayAreaHeight();
+};
+
+const setModalContent = (elemId) => {
+  const modalTitle = document.querySelector(".modal-title");
+  const modalBody = document.querySelector(".modal-body");
+
+  if (elemId == "editor-enlarge-btn") {
+    modalTitle.innerHTML = "Markdown";
+    modalBody.innerHTML = document.getElementById("editor").value;
+  } else if (elemId == "preview-enlarge-btn") {
+    modalTitle.innerHTML = "Preview";
+
+    // Create an iframe and copy content in #preview into this iframe.
+    const iframe = document.createElement("iframe");
+    iframe =
+      iframe.contentWindow ||
+      iframe.contentDocument.document ||
+      iframe.contentDocument;
+
+    iframe.document.open();
+    iframe.document.write("<h1>Hello World!</h1>");
+    iframe.document.close();
+
+    modalBody.append(iframe);
+  } else {
+    modalTitle.innerHTML = "Error";
+    modalBody.innerHTML = "Unknown button is clicked!";
+  }
+};
+
+const setEditorContent = () => {
+  document.querySelector("#editor").value = "";
 };
 
 window.onload = () => {

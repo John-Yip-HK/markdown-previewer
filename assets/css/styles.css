@@ -48,6 +48,8 @@ body {
   outline: none;
 }
 .page-container .row #preview {
+  margin: 0;
+  padding: 0;
   height: 100%;
 }
 

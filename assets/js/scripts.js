@@ -1,3 +1,5 @@
+// Need to think a way to extract Bootstrap SASS variable into JavaScript.
+
 let isInPreview = false;
 
 const changeNavLinkInnerHTML = () => {
@@ -54,49 +56,68 @@ const setModalContent = (elemId) => {
 
   if (elemId == "editor-enlarge-btn") {
     modalTitle.innerHTML = "Markdown";
-    modalBody.innerHTML = document.getElementById("editor").value;
+
+    const contentDiv = document.createElement("div");
+    contentDiv.innerHTML = document.getElementById("editor").value;
+    modalBody.append(contentDiv);
   } else if (elemId == "preview-enlarge-btn") {
     modalTitle.innerHTML = "Preview";
 
-    // Create an iframe and copy content in #preview into this iframe.
     const iframe = document.createElement("iframe");
-    iframe =
-      iframe.contentWindow ||
-      iframe.contentDocument.document ||
-      iframe.contentDocument;
-
-    iframe.document.open();
-    iframe.document.write("<h1>Hello World!</h1>");
-    iframe.document.close();
-
     modalBody.append(iframe);
+    iframe.contentDocument.write(
+      document.querySelector("#preview").contentDocument.body.innerHTML
+    );
   } else {
     modalTitle.innerHTML = "Error";
-    modalBody.innerHTML = "Unknown button is clicked!";
+
+    modalBody.innerHTML = "You have pressed an unknown button.";
   }
 };
 
+const clearModalBody = () => {
+  setTimeout(() => {
+    document.querySelector(".modal-body").lastElementChild.remove();
+  }, 300);
+};
+
 const setEditorContent = () => {
-  document.querySelector("#editor").value = "";
+  const markdownPerSection = [
+    "# Welcome to my React Markdown Previewer!",
+    "## This is a sub-heading...\n### And here's some other cool stuff:",
+    "Heres some code, `<div></div>`, between 2 backticks.",
+    "```\n// this is multi-line code:",
+    "function anotherExample(firstLine, lastLine) {\n\tif (firstLine == '```' && lastLine == '```') {\n\t\treturn multiLineCode;\n\t}\n}\n```",
+    "You can also make text **bold**... whoa!\nOr _italic_.\nOr... wait for it... **_both!_**\nAnd feel free to go crazy ~~crossing stuff out~~.",
+    "There's also [links](https://www.freecodecamp.org), and\n> Block Quotes!",
+    "And if you want to get really crazy, even tables:",
+    "Wild Header | Crazy Header | Another Header?\n------------ | ------------- | -------------\nYour content can | be here, and it | can be here....\nAnd here. | Okay. | I think we get it.",
+    "- And of course there are lists.\n\t- Some are bulleted.\n\t\t- With different indentation levels.\n\t\t\t- That look like this.",
+    "1. And there are numbered lists too.\n1. Use just 1s if you want!\n1. And last but not least, let's not forget embedded images:",
+    "![freeCodeCamp Logo](https://cdn.freecodecamp.org/testable-projects-fcc/images/fcc_secondary.svg)",
+  ];
+  document.querySelector("#editor").value = markdownPerSection.join("\r\r");
+};
+
+const parseMarkdown = (md) => {
+  let dirty = marked(md);
+  let clean = DOMPurify.sanitize(dirty, { USE_PROFILES: { html: true } });
+
+  let iframeDocument = document.querySelector("#preview").contentDocument;
+
+  iframeDocument.write(clean);
+  iframeDocument.close();
 };
 
 window.onload = () => {
   setElementsHeights();
   setEditorContent();
+  parseMarkdown(document.querySelector("#editor").value);
 
   window.addEventListener("resize", setElementsHeights);
-  document.querySelector("#editor").addEventListener("input", (event) => {
-    let dirty = marked(event.currentTarget.value);
-    let clean = DOMPurify.sanitize(dirty, { USE_PROFILES: { html: true } });
-
-    let iframe = document.querySelector("#preview");
-    iframe =
-      iframe.contentWindow ||
-      iframe.contentDocument.document ||
-      iframe.contentDocument;
-
-    iframe.document.open();
-    iframe.document.write(clean);
-    iframe.document.close();
-  });
+  document
+    .querySelector("#editor")
+    .addEventListener("input", (event) =>
+      parseMarkdown(event.currentTarget.value)
+    );
 };

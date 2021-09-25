@@ -13,6 +13,7 @@ $border-width: 1px;
 
 body {
   height: 100vh;
+  overflow: clip;
 }
 
 .nav-link {
@@ -26,6 +27,12 @@ body {
   white-space: -pre-wrap; /* Opera 4-6 */
   white-space: -o-pre-wrap; /* Opera 7 */
   word-wrap: break-word; /* Internet Explorer 5.5+ */
+
+  iframe {
+    width: 100%;
+    max-height: 100%;
+    overflow: hidden;
+  }
 }
 
 .page-container {
@@ -60,10 +67,33 @@ body {
     #preview {
       @include setMarginAndPadding(0, 0);
       height: 100%;
+      padding: 0 8px;
     }
   }
 }
 
 .page-container#md-preview {
   display: none;
+}
+
+@media screen and (min-width: 768px) {
+  .modal-content {
+    max-height: 80% !important;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  main {
+    .page-container {
+      max-width: 50%;
+    }
+
+    #md-editor {
+      float: left;
+    }
+
+    .page-container#md-preview {
+      display: inline-block;
+    }
+  }
 }

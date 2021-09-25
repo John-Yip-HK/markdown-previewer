@@ -1,6 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Courier+Prime&display=swap");
 body {
   height: 100vh;
+  overflow: clip;
 }
 
 .nav-link {
@@ -19,6 +20,11 @@ body {
   /* Opera 7 */
   word-wrap: break-word;
   /* Internet Explorer 5.5+ */
+}
+.modal-body iframe {
+  width: 100%;
+  max-height: 100%;
+  overflow: hidden;
 }
 
 .page-container {
@@ -51,10 +57,28 @@ body {
   margin: 0;
   padding: 0;
   height: 100%;
+  padding: 0 8px;
 }
 
 .page-container#md-preview {
   display: none;
+}
+
+@media screen and (min-width: 768px) {
+  .modal-content {
+    max-height: 80% !important;
+  }
+}
+@media screen and (min-width: 992px) {
+  main .page-container {
+    max-width: 50%;
+  }
+  main #md-editor {
+    float: left;
+  }
+  main .page-container#md-preview {
+    display: inline-block;
+  }
 }
 
 /*# sourceMappingURL=styles.css.map */

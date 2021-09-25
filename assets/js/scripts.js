@@ -1,18 +1,19 @@
 // Need to think a way to extract Bootstrap SASS variable into JavaScript.
 
-let isInPreview = false;
+let previewIsVisible = false;
 
 const changeNavLinkInnerHTML = () => {
-  isInPreview = !isInPreview;
+  previewIsVisible = !previewIsVisible;
 
   const navLink = document.querySelector(".nav-link");
   const editorContainer = document.querySelector("#md-editor");
   const previewContainer = document.querySelector("#md-preview");
 
-  if (isInPreview) {
+  if (previewIsVisible) {
     navLink.innerHTML = "Edit Markdown";
     previewContainer.style.display = "block";
     editorContainer.style.display = "none";
+    setIFrameStyling(document.querySelector("#preview"));
   } else {
     navLink.innerHTML = "View Preview";
     previewContainer.style.display = "none";
@@ -30,7 +31,7 @@ const setMainHeight = () => {
 };
 
 const setDisplayAreaHeight = () => {
-  const pageContainerId = isInPreview ? "#md-preview" : "#md-editor";
+  const pageContainerId = previewIsVisible ? "#md-preview" : "#md-editor";
   const pageContainer = document.querySelector(pageContainerId);
   const topBar = pageContainer.firstElementChild;
 
@@ -46,8 +47,21 @@ const setDisplayAreaHeight = () => {
 };
 
 const setElementsHeights = () => {
+  if (document.offsetWidth >= 992) {
+    editorContainer.style.display = "block";
+    previewContainer.style.display = "block";
+  }
   setMainHeight();
   setDisplayAreaHeight();
+};
+
+const setIFrameStyling = (iframe) => {
+  Array.from(iframe.contentDocument.querySelectorAll("pre")).map(
+    (elem) => (elem.style.whiteSpace = "pre-wrap")
+  );
+  Array.from(iframe.contentDocument.querySelectorAll("img")).map(
+    (elem) => (elem.style.width = "100%")
+  );
 };
 
 const setModalContent = (elemId) => {
@@ -63,11 +77,18 @@ const setModalContent = (elemId) => {
   } else if (elemId == "preview-enlarge-btn") {
     modalTitle.innerHTML = "Preview";
 
+    const previewIFrameBody =
+      document.querySelector("#preview").contentDocument.body;
     const iframe = document.createElement("iframe");
+
     modalBody.append(iframe);
-    iframe.contentDocument.write(
-      document.querySelector("#preview").contentDocument.body.innerHTML
-    );
+    modalBody.style.height = `${previewIFrameBody.scrollHeight}px`;
+    modalBody.style.overflowY = "clip";
+
+    iframe.contentDocument.write(previewIFrameBody.innerHTML);
+    iframe.style.height = `${previewIFrameBody.scrollHeight}px`;
+
+    setIFrameStyling(iframe);
   } else {
     modalTitle.innerHTML = "Error";
 
@@ -77,13 +98,15 @@ const setModalContent = (elemId) => {
 
 const clearModalBody = () => {
   setTimeout(() => {
-    document.querySelector(".modal-body").lastElementChild.remove();
+    const modalBody = document.querySelector(".modal-body");
+    modalBody.lastElementChild.remove();
+    modalBody.removeAttribute("style");
   }, 300);
 };
 
 const setEditorContent = () => {
   const markdownPerSection = [
-    "# Welcome to my React Markdown Previewer!",
+    "# Welcome to my Bootstrap Markdown Previewer!",
     "## This is a sub-heading...\n### And here's some other cool stuff:",
     "Heres some code, `<div></div>`, between 2 backticks.",
     "```\n// this is multi-line code:",
@@ -100,7 +123,9 @@ const setEditorContent = () => {
 };
 
 const parseMarkdown = (md) => {
-  let dirty = marked(md);
+  let dirty = marked(md, {
+    breaks: true,
+  });
   let clean = DOMPurify.sanitize(dirty, { USE_PROFILES: { html: true } });
 
   let iframeDocument = document.querySelector("#preview").contentDocument;
@@ -113,6 +138,7 @@ window.onload = () => {
   setElementsHeights();
   setEditorContent();
   parseMarkdown(document.querySelector("#editor").value);
+  setIFrameStyling(document.querySelector("#preview"));
 
   window.addEventListener("resize", setElementsHeights);
   document

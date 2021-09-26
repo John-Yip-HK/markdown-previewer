@@ -1,28 +1,27 @@
 // Need to think a way to extract Bootstrap SASS variable into JavaScript.
 
-let previewIsVisible = false;
-
-const changeNavLinkInnerHTML = () => {
-  previewIsVisible = !previewIsVisible;
-
+const changeNavLinkInnerHTML = (navLinkTitle) => {
   const navLink = document.querySelector(".nav-link");
   const editorContainer = document.querySelector("#md-editor");
   const previewContainer = document.querySelector("#md-preview");
 
-  if (previewIsVisible) {
+  if (navLinkTitle === "View Preview") {
     navLink.innerHTML = "Edit Markdown";
+
     previewContainer.style.display = "block";
     editorContainer.style.display = "none";
-    setIFrameStyling(document.querySelector("#preview"));
+
+    setIFrameConfig(document.querySelector("#preview"));
   } else {
     navLink.innerHTML = "View Preview";
+
     previewContainer.style.display = "none";
     editorContainer.style.display = "block";
   }
 };
 
 const setMainHeight = () => {
-  const bodyHeight = document.querySelector("body").offsetHeight;
+  const bodyHeight = document.body.offsetHeight;
   const navbarHeight = document.querySelector("#navbar").offsetHeight;
 
   document.querySelector("main").style.height = `${
@@ -31,37 +30,98 @@ const setMainHeight = () => {
 };
 
 const setDisplayAreaHeight = () => {
-  const pageContainerId = previewIsVisible ? "#md-preview" : "#md-editor";
-  const pageContainer = document.querySelector(pageContainerId);
+  const pageContainer =
+    document.querySelector("#md-editor").offsetHeight > 0
+      ? document.querySelector("#md-editor")
+      : document.querySelector("#md-preview");
   const topBar = pageContainer.firstElementChild;
 
   for (let elem of [
     document.querySelector("#editor"),
     document.querySelector("#preview"),
-  ])
+  ]) {
     elem.style.height = `${
       pageContainer.offsetHeight -
       pageContainer.clientTop * 2 -
       topBar.offsetHeight
     }px`;
+  }
+
+  if (document.body.offsetWidth >= 992) {
+    document.querySelector("#md-editor").style.display = "block";
+    document.querySelector("#md-preview").style.display = "block";
+  } else {
+    if (
+      document.querySelector("#edit-or-preview").innerHTML === "View Preview"
+    ) {
+      document.querySelector("#md-editor").style.display = "block";
+      document.querySelector("#md-preview").style.display = "none";
+    } else {
+      document.querySelector("#md-editor").style.display = "none";
+      document.querySelector("#md-preview").style.display = "block";
+    }
+  }
 };
 
-const setElementsHeights = () => {
-  if (document.offsetWidth >= 992) {
-    editorContainer.style.display = "block";
-    previewContainer.style.display = "block";
-  }
+const setupElements = () => {
   setMainHeight();
   setDisplayAreaHeight();
 };
 
-const setIFrameStyling = (iframe) => {
-  Array.from(iframe.contentDocument.querySelectorAll("pre")).map(
-    (elem) => (elem.style.whiteSpace = "pre-wrap")
-  );
-  Array.from(iframe.contentDocument.querySelectorAll("img")).map(
-    (elem) => (elem.style.width = "100%")
-  );
+const setIFrameConfig = (iframe) => {
+  const configs = [
+    {
+      cssSelector: "pre",
+      configFunction: (elem) => (elem.style.whiteSpace = "pre-wrap"),
+    },
+    {
+      cssSelector: "img",
+      configFunction: (elem) => (elem.style.width = "100%"),
+    },
+    {
+      cssSelector: "a",
+      configFunction: (elem) => elem.setAttribute("target", "_blank"),
+    },
+    {
+      cssSelector: "pre, code",
+      configFunction: (elem) => {
+        elem.style.background = "#FFF";
+        elem.style.fontWeight = "600";
+      },
+    },
+    {
+      cssSelector: "blockquote",
+      configFunction: (elem) => {
+        elem.style.fontSize = "1.5rem";
+        elem.style.fontFamily = '"Book Antiqua", serif';
+      },
+    },
+    {
+      cssSelector: "table",
+      configFunction: (elem) => {
+        elem.style.borderCollapse = "collapse";
+      },
+    },
+    {
+      cssSelector: "th, td",
+      configFunction: (elem) => {
+        elem.style.border = "2px solid black";
+        elem.style.padding = "2px 5px";
+      },
+    },
+    {
+      cssSelector: "body",
+      configFunction: (elem) => {
+        elem.style.fontFamily = "Verdana, sans-serif";
+      },
+    },
+  ];
+
+  for (let config of configs) {
+    Array.from(
+      iframe.contentDocument.querySelectorAll(config["cssSelector"])
+    ).map(config["configFunction"]);
+  }
 };
 
 const setModalContent = (elemId) => {
@@ -88,7 +148,7 @@ const setModalContent = (elemId) => {
     iframe.contentDocument.write(previewIFrameBody.innerHTML);
     iframe.style.height = `${previewIFrameBody.scrollHeight}px`;
 
-    setIFrameStyling(iframe);
+    setIFrameConfig(iframe);
   } else {
     modalTitle.innerHTML = "Error";
 
@@ -135,15 +195,14 @@ const parseMarkdown = (md) => {
 };
 
 window.onload = () => {
-  setElementsHeights();
+  setupElements();
   setEditorContent();
   parseMarkdown(document.querySelector("#editor").value);
-  setIFrameStyling(document.querySelector("#preview"));
+  setIFrameConfig(document.querySelector("#preview"));
 
-  window.addEventListener("resize", setElementsHeights);
-  document
-    .querySelector("#editor")
-    .addEventListener("input", (event) =>
-      parseMarkdown(event.currentTarget.value)
-    );
+  window.addEventListener("resize", setupElements);
+  document.querySelector("#editor").addEventListener("input", (event) => {
+    parseMarkdown(event.currentTarget.value);
+    setIFrameConfig(document.querySelector("#preview"));
+  });
 };

@@ -1,3 +1,6 @@
+@import "../../node_modules/bootstrap/scss/functions";
+@import "../../node_modules/bootstrap/scss/variables";
+@import "../../node_modules/bootstrap/scss/mixins";
 @import url("https://fonts.googleapis.com/css2?family=Courier+Prime&display=swap");
 
 @mixin setBlockCenter() {
@@ -14,24 +17,52 @@ $border-width: 1px;
 body {
   height: 100vh;
   overflow: clip;
+  font-size: 20px;
 }
 
 .nav-link {
   cursor: pointer;
 }
 
-.modal-body {
-  font-family: "Courier Prime", monospace;
-  white-space: pre-wrap; /* css-3 */
-  white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
-  white-space: -pre-wrap; /* Opera 4-6 */
-  white-space: -o-pre-wrap; /* Opera 7 */
-  word-wrap: break-word; /* Internet Explorer 5.5+ */
+.modal-content {
+  background: $green-300;
 
-  iframe {
-    width: 100%;
-    max-height: 100%;
-    overflow: hidden;
+  .modal-header {
+    .btn-close {
+      color: $green-500;
+    }
+  }
+
+  .modal-body {
+    font-family: "Courier Prime", monospace;
+    white-space: pre-wrap; /* css-3 */
+    white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+    white-space: -pre-wrap; /* Opera 4-6 */
+    white-space: -o-pre-wrap; /* Opera 7 */
+    word-wrap: break-word; /* Internet Explorer 5.5+ */
+
+    background: $green-100;
+
+    iframe {
+      width: 100%;
+      max-height: 100%;
+    }
+  }
+
+  .modal-body[style*="overflow-y: clip"] {
+    padding: 8px;
+  }
+
+  .modal-body[class*="about-details"] {
+    text-align: center;
+    font-family: sans-serif;
+  }
+
+  .modal-footer {
+    button {
+      background: $green-500;
+      border-color: $green-500;
+    }
   }
 }
 
@@ -48,10 +79,30 @@ body {
     .top-bar {
       padding: 0.5rem 1rem;
       border-bottom: $border-width solid black;
+      background: $green-300;
 
       .btn {
         padding: 0 0.3rem;
+        color: $green-600;
+        border-color: $green-600;
       }
+
+      .btn:hover,
+      .btn:active {
+        background: $green-200;
+        box-shadow: 0 0 0 0.25rem rgba($green-100, 1);
+      }
+
+      .btn-outline-secondary:focus {
+        box-shadow: 0 0 0 0.25rem rgba($green-100, 0.5);
+      }
+    }
+
+    textarea,
+    #preview {
+      background: $green-100;
+      -moz-tab-size: 4; /* Firefox */
+      tab-size: 4;
     }
 
     textarea {
@@ -67,7 +118,7 @@ body {
     #preview {
       @include setMarginAndPadding(0, 0);
       height: 100%;
-      padding: 0 8px;
+      padding-left: 8px;
     }
   }
 }
@@ -76,13 +127,17 @@ body {
   display: none;
 }
 
-@media screen and (min-width: 768px) {
+@media screen and (min-width: map-get($grid-breakpoints, "md")) {
   .modal-content {
     max-height: 80% !important;
   }
 }
 
-@media screen and (min-width: 992px) {
+@media screen and (min-width: map-get($grid-breakpoints, "lg")) {
+  body {
+    font-size: 16px;
+  }
+
   main {
     .page-container {
       max-width: 50%;
@@ -93,7 +148,8 @@ body {
     }
 
     .page-container#md-preview {
-      display: inline-block;
+      display: block;
+      float: right;
     }
   }
 }

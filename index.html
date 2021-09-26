@@ -15,10 +15,10 @@
 </head>
 <body class="m-0 p-0">
   <header>
-    <nav id="navbar" class="navbar navbar-expand-md navbar-light bg-light">
+    <nav id="navbar" class="navbar navbar-expand-md navbar-dark bg-success">
       <div class="container-fluid">
         <span class="navbar-brand mb-0 h1">Markdown Previewer</span>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <button id="navbar-toggle-btn" class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
@@ -27,10 +27,10 @@
           </span>
           <ul class="navbar-nav">
             <li class="nav-item">
-              <a class="nav-link d-lg-none" onclick="changeNavLinkInnerHTML()">View Preview</a>
+              <a id="edit-or-preview" class="nav-link d-lg-none" onclick="changeNavLinkInnerHTML(this.innerHTML)">View Preview</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" onclick="console.log(this.innerHTML)">About</a>
+              <a class="nav-link" data-bs-toggle="modal" data-bs-target="#aboutModal">About</a>
             </li>
           </ul>
         </div>
@@ -55,11 +55,31 @@
       </div>
     </div>
 
+    <div class="modal fade" id="aboutModal" tabindex="-1" aria-labelledby="aboutModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="aboutModalLabel">
+              About Markdown Previewer
+            </h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body about-details">
+            <p id="description">A simple markdown previewer to fulfill freeCodeCamp Front End Development project requirements.</p>
+            <p id="author">Yip Chun On &copy;2021</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </header>
   
   <main>
     <div id="md-editor" class="page-container">
-      <div class="row page">
+      <div class="row">
         <div class="col-12 d-flex justify-content-between top-bar">
           <span class="fs-5 top-bar-title align-self-center">Markdown</span>
           <button id="editor-enlarge-btn"type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#enlargeTextareaModal" onclick="setModalContent(this.id)">
@@ -72,7 +92,7 @@
       </div>
     </div>
     <div id="md-preview" class="page-container">
-      <div class="row page">
+      <div class="row">
         <div class="col-12 d-flex justify-content-between top-bar">
           <span class="fs-5 top-bar-title align-self-center">Preview</span>
           <button id="preview-enlarge-btn"type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#enlargeTextareaModal" onclick="setModalContent(this.id)">
@@ -87,12 +107,11 @@
     </div>
   </main>
   
-  <!-- build:js assets/js/script.js -->
+  <!-- build:js assets/js/scripts.js -->
   <script src="node_modules/@popperjs/core/dist/umd/popper.min.js"></script>
   <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
   <script src="node_modules/marked/marked.min.js"></script>
   <script src="node_modules/dompurify/dist/purify.min.js"></script>
-  <!-- <script src="https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js"></script> -->
   <script src="assets/js/scripts.js"></script>
   <!-- endbuild -->
 </body>

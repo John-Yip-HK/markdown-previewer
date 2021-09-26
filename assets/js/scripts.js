@@ -143,7 +143,7 @@ const setModalContent = (elemId) => {
 
     modalBody.append(iframe);
     modalBody.style.height = `${previewIFrameBody.scrollHeight}px`;
-    modalBody.style.overflowY = "clip";
+    modalBody.style.overflowY = "hidden";
 
     iframe.contentDocument.write(previewIFrameBody.innerHTML);
     iframe.style.height = `${previewIFrameBody.scrollHeight}px`;

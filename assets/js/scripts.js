@@ -117,12 +117,6 @@ const setIFrameConfig = (iframe) => {
       cssSelector: "body",
       configFunction: (elem) => {
         elem.style.fontFamily = "Verdana, sans-serif";
-        if (
-          navigator.userAgent.includes("Safari") &&
-          !navigator.userAgent.includes("Chrome")
-        ) {
-          elem.style.overflowY = "hidden";
-        }
       },
     },
   ];
@@ -162,6 +156,12 @@ const setModalContent = (elemId) => {
 
     iframe.contentDocument.write(previewIFrameBody.innerHTML);
     iframe.style.height = `${previewIFrameBody.scrollHeight}px`;
+    if (
+      navigator.userAgent.includes("Safari") &&
+      !navigator.userAgent.includes("Chrome")
+    ) {
+      iframe.style.overflowY = "hidden";
+    }
 
     setIFrameConfig(iframe);
   } else {

@@ -3,6 +3,7 @@ body {
   height: 100vh;
   overflow: clip;
   font-size: 20px;
+  background: #d1e7dd;
 }
 
 .nav-link {
@@ -28,6 +29,7 @@ body {
   word-wrap: break-word;
   /* Internet Explorer 5.5+ */
   background: #d1e7dd;
+  padding: 8px;
 }
 .modal-content .modal-body iframe {
   width: 100%;

@@ -18,6 +18,7 @@ body {
   height: 100vh;
   overflow: clip;
   font-size: 20px;
+  background: $green-100;
 }
 
 .nav-link {
@@ -42,6 +43,7 @@ body {
     word-wrap: break-word; /* Internet Explorer 5.5+ */
 
     background: $green-100;
+    padding: 8px;
 
     iframe {
       width: 100%;

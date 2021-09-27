@@ -23,9 +23,13 @@ const changeNavLinkInnerHTML = (navLinkTitle) => {
 const setMainHeight = () => {
   const bodyHeight = document.body.offsetHeight;
   const navbarHeight = document.querySelector("#navbar").offsetHeight;
+  const collapseMenuHeight =
+    document.body.offsetWidth < 768
+      ? document.querySelector("#navbarNav").offsetHeight
+      : 0;
 
   document.querySelector("main").style.height = `${
-    bodyHeight - navbarHeight
+    bodyHeight - navbarHeight + collapseMenuHeight
   }px`;
 };
 
@@ -113,6 +117,12 @@ const setIFrameConfig = (iframe) => {
       cssSelector: "body",
       configFunction: (elem) => {
         elem.style.fontFamily = "Verdana, sans-serif";
+        if (
+          navigator.userAgent.includes("Safari") &&
+          !navigator.userAgent.includes("Chrome")
+        ) {
+          elem.style.overflowY = "hidden";
+        }
       },
     },
   ];
@@ -142,8 +152,13 @@ const setModalContent = (elemId) => {
     const iframe = document.createElement("iframe");
 
     modalBody.append(iframe);
+
     modalBody.style.height = `${previewIFrameBody.scrollHeight}px`;
-    modalBody.style.overflowY = "hidden";
+
+    let userAgentString = navigator.userAgent;
+    modalBody.style.overflowY = userAgentString.includes("Firefox")
+      ? "hidden"
+      : "clip";
 
     iframe.contentDocument.write(previewIFrameBody.innerHTML);
     iframe.style.height = `${previewIFrameBody.scrollHeight}px`;

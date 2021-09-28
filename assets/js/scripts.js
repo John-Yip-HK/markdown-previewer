@@ -1,5 +1,3 @@
-// Need to think a way to extract Bootstrap SASS variable into JavaScript.
-
 const changeNavLinkInnerHTML = (navLinkTitle) => {
   const navLink = document.querySelector(".nav-link");
   const editorContainer = document.querySelector("#md-editor");

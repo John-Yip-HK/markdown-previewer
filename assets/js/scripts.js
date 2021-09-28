@@ -160,7 +160,7 @@ const setModalContent = (elemId) => {
       navigator.userAgent.includes("Safari") &&
       !navigator.userAgent.includes("Chrome")
     ) {
-      iframe.style.overflowY = "hidden";
+      iframe.contentDocument.body.style.overflowY = "hidden";
     }
 
     setIFrameConfig(iframe);
